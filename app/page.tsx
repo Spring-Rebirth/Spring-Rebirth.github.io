@@ -71,7 +71,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            全栈开发者 / 科技爱好者 / 细节控。
+            跨平台 App 开发者 / 科技爱好者 / 细节控。
             <br />
             专注于构建<span className="text-white font-semibold">高性能 Mobile 应用</span>与
             <span className="text-white font-semibold"> 极致的用户体验</span>。
@@ -116,7 +116,10 @@ export default function Home() {
       <TechStack />
 
       {/* 预留位置：后续的项目展示区 */}
-      <section id="projects" className="min-h-screen"></section>
+      <section id="projects" className="min-h-screen">
+
+      </section>
+
     </div>
   );
 }
