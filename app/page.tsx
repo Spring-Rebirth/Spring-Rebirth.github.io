@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Code2, ChevronDown, X, Copy, Check } from "lucide-react";
+import { Mail, Code2, ChevronDown, X, Copy, Check, Rocket } from "lucide-react";
 import TechStack from "@/components/TechStack";
 
 // 2. 自定义 GitHub 图标组件 (保持 Lucide 的线条风格)
@@ -146,8 +146,37 @@ export default function Home() {
       <TechStack />
 
       {/* 预留位置：后续的项目展示区 */}
-      <section id="projects" className="min-h-screen">
+      <section id="projects" className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden py-20">
+        {/* 装饰背景 */}
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center z-10 space-y-6 px-4"
+        >
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-block p-6 rounded-full bg-slate-800/50 border border-slate-700 mb-2 backdrop-blur-sm"
+          >
+            <Rocket size={48} className="text-cyan-400" />
+          </motion.div>
+
+          <h2 className="text-4xl md:text-5xl font-bold text-white">
+            Projects
+            <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-purple-600 ml-2">
+              Coming Soon
+            </span>
+          </h2>
+
+          <p className="text-slate-400 text-lg max-w-md mx-auto leading-relaxed">
+            这里暂时还没有内容。敬请期待...
+          </p>
+        </motion.div>
       </section>
 
       {/* Email Modal */}
