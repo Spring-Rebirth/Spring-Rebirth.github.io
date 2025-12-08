@@ -24,39 +24,59 @@ const GithubIcon = ({ size = 24, className = "" }: { size?: number, className?: 
   </svg>
 );
 
-// 3. 自定义 X（原 Twitter）图标组件
-const XIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+// 3. 自定义 QQ 图标组件 (使用文本)
+const QQIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
     height={size}
     viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    fill="currentColor"
     className={className}
   >
-    <path d="M4 4h4.6L12 9.2 15.4 4H20l-6.1 7.2L20 20h-4.6L12 14.8 8.6 20H4l6.1-6.8z" fill="currentColor" />
+    <text
+      x="50%"
+      y="54%"
+      dominantBaseline="middle"
+      textAnchor="middle"
+      fontSize="16"
+      fontWeight="800"
+      style={{ fontFamily: "sans-serif" }}
+    >
+      QQ
+    </text>
   </svg>
 );
 
 export default function Home() {
-  const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const [activeContact, setActiveContact] = useState<{ title: string; value: string } | null>(null);
   const [copied, setCopied] = useState(false);
-  const email = "powerfulseed1998@email.com";
+
+  const contactInfo = {
+    email: "powerfulseed1998@email.com",
+    qq: "1392600130"
+  };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (activeContact) {
+      navigator.clipboard.writeText(activeContact.value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const socialLinks = [
     { icon: <GithubIcon size={24} />, href: "https://github.com", type: "link" },
-    { icon: <XIcon size={24} />, href: "https://x.com", type: "link" },
-    { icon: <Mail size={24} />, type: "button", onClick: () => setIsEmailOpen(true) },
+    {
+      icon: <QQIcon size={24} />,
+      type: "button",
+      onClick: () => setActiveContact({ title: "QQ", value: contactInfo.qq })
+    },
+    {
+      icon: <Mail size={24} />,
+      type: "button",
+      onClick: () => setActiveContact({ title: "Email", value: contactInfo.email })
+    },
     { icon: <Code2 size={24} />, href: "#projects", type: "link" },
   ];
 
@@ -179,16 +199,16 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Email Modal */}
+      {/* Contact Modal */}
       <AnimatePresence>
-        {isEmailOpen && (
+        {activeContact && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsEmailOpen(false)}
+              onClick={() => setActiveContact(null)}
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
             {/* Content */}
@@ -199,16 +219,16 @@ export default function Home() {
               className="relative z-10 bg-slate-900 border border-slate-700 p-6 rounded-2xl shadow-xl w-auto max-w-lg"
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-white">Contact Me</h3>
+                <h3 className="text-xl font-bold text-white">{activeContact.title}</h3>
                 <button
-                  onClick={() => setIsEmailOpen(false)}
+                  onClick={() => setActiveContact(null)}
                   className="text-slate-400 hover:text-white transition-colors"
                 >
                   <X size={20} />
                 </button>
               </div>
               <div className="bg-slate-950 p-3 px-4 rounded-lg border border-slate-800 flex items-center gap-4">
-                <span className="text-slate-300 select-all whitespace-nowrap">{email}</span>
+                <span className="text-slate-300 select-all whitespace-nowrap">{activeContact.value}</span>
                 <div className="relative flex items-center justify-end shrink-0 min-w-[60px] h-[26px]">
                   <AnimatePresence mode="wait">
                     {copied ? (
