@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, Code2, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Code2, ChevronDown, X, Copy, Check } from "lucide-react";
 import TechStack from "@/components/TechStack";
 
 // 2. 自定义 GitHub 图标组件 (保持 Lucide 的线条风格)
@@ -42,6 +43,23 @@ const XIcon = ({ size = 24, className = "" }: { size?: number, className?: strin
 );
 
 export default function Home() {
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const email = "powerfulseed1998@email.com";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const socialLinks = [
+    { icon: <GithubIcon size={24} />, href: "https://github.com", type: "link" },
+    { icon: <XIcon size={24} />, href: "https://x.com", type: "link" },
+    { icon: <Mail size={24} />, type: "button", onClick: () => setIsEmailOpen(true) },
+    { icon: <Code2 size={24} />, href: "#projects", type: "link" },
+  ];
+
   return (
     <div className="bg-slate-950 min-h-screen text-white overflow-x-hidden">
       <main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white p-6 relative overflow-hidden">
@@ -84,22 +102,34 @@ export default function Home() {
             transition={{ delay: 1, duration: 0.5 }}
           >
             {/* 4. 在这里更新图标的调用方式 */}
-            {[
-              { icon: <GithubIcon size={24} />, href: "https://github.com" },
-              { icon: <XIcon size={24} />, href: "https://x.com" },
-              { icon: <Mail size={24} />, href: "powerfulseed1998@email.com" },
-              { icon: <Code2 size={24} />, href: "#projects" },
-            ].map((item, index) => (
-              <motion.a
-                key={index}
-                href={item.href}
-                whileHover={{ scale: 1.1, color: "#22d3ee" }}
-                whileTap={{ scale: 0.95 }}
-                className="p-3 bg-slate-900 rounded-xl border border-slate-800 text-slate-300 transition-colors hover:border-cyan-500/50"
-              >
-                {item.icon}
-              </motion.a>
-            ))}
+            {socialLinks.map((item, index) => {
+              const commonProps = {
+                key: index,
+                whileHover: { scale: 1.1, color: "#22d3ee" },
+                whileTap: { scale: 0.95 },
+                className: "p-3 bg-slate-900 rounded-xl border border-slate-800 text-slate-300 transition-colors hover:border-cyan-500/50 cursor-pointer"
+              };
+
+              if (item.type === "button") {
+                return (
+                  <motion.button
+                    {...commonProps}
+                    onClick={item.onClick}
+                  >
+                    {item.icon}
+                  </motion.button>
+                );
+              }
+
+              return (
+                <motion.a
+                  {...commonProps}
+                  href={item.href}
+                >
+                  {item.icon}
+                </motion.a>
+              );
+            })}
           </motion.div>
         </div>
 
@@ -119,6 +149,69 @@ export default function Home() {
       <section id="projects" className="min-h-screen">
 
       </section>
+
+      {/* Email Modal */}
+      <AnimatePresence>
+        {isEmailOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsEmailOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative z-10 bg-slate-900 border border-slate-700 p-6 rounded-2xl shadow-xl w-auto max-w-lg"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-white">Contact Me</h3>
+                <button
+                  onClick={() => setIsEmailOpen(false)}
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="bg-slate-950 p-3 px-4 rounded-lg border border-slate-800 flex items-center gap-4">
+                <span className="text-slate-300 select-all whitespace-nowrap">{email}</span>
+                <div className="relative flex items-center justify-end shrink-0 min-w-[60px] h-[26px]">
+                  <AnimatePresence mode="wait">
+                    {copied ? (
+                      <motion.span
+                        key="copied"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="text-sm text-green-400 font-medium whitespace-nowrap"
+                      >
+                        Copied!
+                      </motion.span>
+                    ) : (
+                      <motion.button
+                        key="copy-btn"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        onClick={handleCopy}
+                        className="p-1 hover:bg-slate-800 rounded-md transition-colors text-slate-400 hover:text-cyan-400"
+                        title="Copy to clipboard"
+                      >
+                        <Copy size={18} />
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
