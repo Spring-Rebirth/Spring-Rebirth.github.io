@@ -5,19 +5,19 @@ import { motion } from "framer-motion";
 // 定义技术栈数据，你可以根据自己的实际情况修改
 const techCategories = [
     {
-        title: "Frontend Core",
+        title: "iOS",
         color: "from-cyan-400 to-blue-500", // 渐变色定义
-        skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Zustand"],
+        skills: ["Swift", "SwiftUI"],
     },
     {
-        title: "Mobile & Backend",
+        title: "Cross-Platform",
         color: "from-purple-400 to-pink-500",
         skills: ["React Native", "Expo", "Reanimated", "RNGH", "React Query", "Nativewind", "Firebase"],
     },
     {
-        title: "DevOps & Tools",
+        title: "Tools",
         color: "from-amber-400 to-orange-500",
-        skills: ["Git", "Vercel", "Figma"],
+        skills: ["Git", "Android Studio", "Xcode"],
     },
 ];
 
