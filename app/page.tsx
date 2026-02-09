@@ -124,7 +124,6 @@ export default function Home() {
             {/* 4. 在这里更新图标的调用方式 */}
             {socialLinks.map((item, index) => {
               const commonProps = {
-                key: index,
                 whileHover: { scale: 1.1, color: "#22d3ee" },
                 whileTap: { scale: 0.95 },
                 className: "p-3 bg-slate-900 rounded-xl border border-slate-800 text-slate-300 transition-colors hover:border-cyan-500/50 cursor-pointer"
@@ -133,6 +132,7 @@ export default function Home() {
               if (item.type === "button") {
                 return (
                   <motion.button
+                    key={index}
                     {...commonProps}
                     onClick={item.onClick}
                   >
@@ -143,6 +143,7 @@ export default function Home() {
 
               return (
                 <motion.a
+                  key={index}
                   {...commonProps}
                   href={item.href}
                 >
